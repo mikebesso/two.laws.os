@@ -1,6 +1,6 @@
 #' @include OSBaseClass.R
 
-
+#' @export
 MacOS <- R6Class(
   "MacOS",
   inherit = OSBaseClass,
@@ -10,6 +10,8 @@ MacOS <- R6Class(
 
     initialize = function(verbose = FALSE){
       super$initialize(verbose = verbose)
+
+      AssertAllMatchFixed(self$OSName, "Darwin")
     }
 
   )

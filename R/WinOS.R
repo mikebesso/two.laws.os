@@ -1,10 +1,32 @@
 #' @include OSBaseClass.R
 
-
+#' @export
 WinOS <- R6Class(
   "WinOS",
   inherit = OSBaseClass,
   public = list(
+
+
+    AssertDateFormat = function(dateFormat){
+      AssertAllMatchFixed(GetDateFormat(), dateFormat)
+    },
+
+    AssertStandardDateFormat = function(){
+      AssertAllMatchFixed(GetDateFormat(), "yyyy-MM-dd")
+    },
+
+    GetDateFormat = function(){
+
+      Results <- self$System(
+        command = "REG",
+        args = c("QUERY", shQuote("HKCU\\Control Panel\\International"), "/v", "sShortDate")
+      )
+
+      DateFormat <- tail(str_split(Results$StdOut[3], "\\s")[[1]], 1)
+
+      return(DateFormat)
+
+    },
 
     RoboCopy = function(fromFolder, toFolder, files = character(), args = character()){
 
@@ -69,8 +91,12 @@ WinOS <- R6Class(
     },
 
 
+
+
     initialize = function(verbose = FALSE){
       super$initialize(verbose = verbose)
+
+      AssertAllMatchFixed(self$OSName, "Windows")
     }
 
   )

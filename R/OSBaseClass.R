@@ -1,17 +1,28 @@
 
-
+#' @export
 OSBaseClass <- R6Class(
 
   "OSBaseClass",
   inherit = BaseClass,
   public = list(
 
+    Folders = list(),
+    OSName = NA,
+
+    GetTempPath = function(pattern = "file", ext = ""){
+
+      Path <- tempfile(pattern = pattern, tmpdir = self$Folders$Temp, fileext = ext)
+
+      return(Path)
+    },
+
+    GetDateFormat = function(){
+      stop("Generic GetDateFormat() not yet written")
+    },
 
     System = function(
       command,
       args = character(),
-      stdout = "",
-      stderr = "",
       stdin = "",
       input = NULL,
       env = character(),
@@ -20,12 +31,17 @@ OSBaseClass <- R6Class(
       uiInvisible = TRUE
     ) {
 
+
+      StdOut <- self$GetTempPath(pattern = "stdout");
+      StdErr <- self$GetTempPath(pattern = "stderr");
+
+
       StatusCode <- tryCatch(
          private$system2(
           command,
           args = args,
-          stdout = stdout,
-          stderr = stderr,
+          stdout = StdOut,
+          stderr = StdErr,
           stdin = stdin,
           input = input,
           env = env,
@@ -42,7 +58,13 @@ OSBaseClass <- R6Class(
 
       )
 
-       return(StatusCode)
+      Results <- list(
+        StatusCode = StatusCode,
+        StdOut = readLines(StdOut),
+        StdErr = readLines(StdErr)
+      )
+
+       return(Results)
     },
 
     CreateFolder = function(folder){
@@ -134,6 +156,11 @@ OSBaseClass <- R6Class(
 
     initialize = function(verbose = FALSE){
       super$initialize(verbose = verbose)
+
+      self$OSName <- Sys.info()[["sysname"]]
+
+      self$Folders$Temp = tempdir()
+
     }
   ),
 

@@ -11,10 +11,11 @@ Encoding: UTF-8
 LazyData: true
 Depends:
   two.laws.big.bang
-Collate:
+Collate: 
     'OSBaseClass.R'
     'MacOS.R'
     'WinOS.R'
+    'factory.R'
     'two.laws.os.R'
 RoxygenNote: 6.0.1
 Suggests: 

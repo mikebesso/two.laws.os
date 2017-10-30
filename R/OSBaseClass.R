@@ -9,9 +9,29 @@ OSBaseClass <- R6Class(
     Folders = list(),
     OSName = NA,
 
-    GetTempPath = function(pattern = "file", ext = ""){
+    TempFile = function(prefix = "file", fileExtension = ""){
 
-      Path <- tempfile(pattern = pattern, tmpdir = self$Folders$Temp, fileext = ext)
+      FileExtension <- if ((nchar(fileExtension) > 0) & substr(fileExtension, 1, 1) != ".") {
+        paste0(".", fileExtension)
+      } else {
+        fileExtension
+      }
+
+      TempFilePath <- file.path(self$Folders$Temp, paste0(basename(tempfile(prefix)), FileExtension))
+      return(TempFilePath)
+    },
+
+    GetTempPath = function(prefix = "file", fileExtension = ""){
+
+      Path <- self$TempFile(prefix = prefix, fileExtension = fileExtension)
+
+      if (!dir.exists(dirname(Path))){
+        TempFolder <- dirname(Path)
+        self$Message("Creating Temp Folder: ", TempFolder)
+        self$CreateFolder(TempFolder)
+
+      }
+
 
       return(Path)
     },
@@ -32,9 +52,13 @@ OSBaseClass <- R6Class(
     ) {
 
 
-      StdOut <- self$GetTempPath(pattern = "stdout");
-      StdErr <- self$GetTempPath(pattern = "stderr");
+      StdOut <- self$GetTempPath(prefix = "GetDateFormat-", fileExtension = "stdout");
+      StdErr <- self$GetTempPath(prefix = "GetDateFormat-", fileExtension = "stderr");
 
+
+
+      self$Message(StdOut)
+      self$Message(StdErr)
 
       StatusCode <- tryCatch(
          private$system2(
@@ -159,7 +183,9 @@ OSBaseClass <- R6Class(
 
       self$OSName <- Sys.info()[["sysname"]]
 
-      self$Folders$Temp = tempdir()
+      TempFolder <- tempdir()
+
+      self$Folders$Temp = file.path(dirname(TempFolder), "TwoLaws", basename(TempFolder))
 
     }
   ),

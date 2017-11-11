@@ -92,12 +92,20 @@ OSBaseClass <- R6Class(
     },
 
     CreateFolder = function(folder){
-
       dir.create(folder, showWarnings = FALSE, recursive = TRUE)
-
       AssertFolderExists(folder)
+    },
+
+    CreateFolders = function(folder){
+
+      l_ply(
+        folder,
+        self$CreateFolder
+      )
 
     },
+
+
 
     DeleteFolder = function(folder){
 

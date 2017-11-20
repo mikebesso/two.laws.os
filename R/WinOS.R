@@ -1,4 +1,6 @@
 #' @include OSBaseClass.R
+NULL
+
 
 #' @export
 WinOS <- R6Class(

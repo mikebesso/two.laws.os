@@ -9,8 +9,9 @@ Description: More about what it does (maybe more than one line)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
-Depends:
-  two.laws.big.bang
+Imports:
+  two.laws.big.bang,
+  two.laws.dev
 Collate: 
     'OSBaseClass.R'
     'MacOS.R'

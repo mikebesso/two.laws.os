@@ -1,6 +1,7 @@
+NULL
 
 #' @export
-OSBaseClass <- R6Class(
+OSBaseClass <- two.laws.big.bang::R6Class(
 
   "OSBaseClass",
   inherit = BaseClass,

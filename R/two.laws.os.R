@@ -1,9 +1,10 @@
+#' @import two.laws.big.bang
 NULL
 
 
 
 
-TwoLawsOSClass <- R6Class(
+TwoLawsOSClass <- two.laws.big.bang::R6Class(
   "TwoLawsOSClass",
   inherit = ProjectBaseClass,
   public = list(

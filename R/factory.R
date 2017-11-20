@@ -1,6 +1,5 @@
 #' @include MacOS.R
 #' @include WinOS.R
-#' @include WinOS.R
 #' @include MacOS.R
 #' NULL
 

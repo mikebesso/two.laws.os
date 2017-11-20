@@ -1,7 +1,9 @@
 #' @include OSBaseClass.R
+NULL
+
 
 #' @export
-MacOS <- R6Class(
+MacOS <- two.laws.big.bang::R6Class(
   "MacOS",
   inherit = OSBaseClass,
   public = list(
